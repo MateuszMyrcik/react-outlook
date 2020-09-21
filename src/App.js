@@ -1,26 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./styles.css";
+import Navigation from "./components/navigation/script";
+import Calendar from "./components/calendar/script";
+import { Provider } from 'react-redux';
+import { store } from "./redux/index";
 
-function App() {
+export default function App() {
+  const navItems = ["calendar", "todo", "ranking"];
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Provider store={store}>
+        <Navigation items={navItems}></Navigation>
+        <Calendar></Calendar>  
+      </Provider>
     </div>
   );
 }
-
-export default App;
