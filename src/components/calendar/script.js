@@ -1,6 +1,6 @@
 import React from "react";
 import { monthLengths } from "./config.js";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import CalendarDay from "../calendar-day/script.js";
 import CalendarHeadings from "../calendar-headings/script";
 
@@ -8,9 +8,11 @@ import "./style.scss";
 
 const CALENDAR_CELL_COUNT = 35;
 
-function Calendar(props) {
+function Calendar() {
+  const monthNumber = useSelector(state => state.monthNumber)
+
   const firstMonthDayNumber = new Date(
-    Date.UTC(2020, props.monthNumber, 1)
+    Date.UTC(2020, monthNumber, 1)
   ).getDay();
 
   getDaysNumbers();
@@ -23,8 +25,8 @@ function Calendar(props) {
 
   function getDaysNumbers() {
     const monthLenght = {
-      prev: getMonthLenght(props.monthNumber - 1),
-      current: getMonthLenght(props.monthNumber)
+      prev: getMonthLenght(monthNumber - 1),
+      current: getMonthLenght(monthNumber)
     };
 
     const daysNumbers = [];
@@ -47,7 +49,7 @@ function Calendar(props) {
   }
 
   function getMonthLenght() {
-    return monthLengths[props.monthNumber];
+    return monthLengths[monthNumber];
   }
 
   return (
@@ -58,10 +60,4 @@ function Calendar(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    monthNumber: state.monthNumber
-  }
-}
-
-export default connect(mapStateToProps)(Calendar);
+export default Calendar;

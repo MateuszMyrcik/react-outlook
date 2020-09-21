@@ -1,9 +1,13 @@
-import { connect } from 'react-redux'
+import { useSelector, useDispatch} from 'react-redux'
 import React, { useState } from "react";
-import "./style.scss";
 import { changeMonth } from '../../actions/index';
 
-const Navigation = (props) => {
+import "./style.scss";
+
+const Navigation = () => {
+  const monthNumber = useSelector(state => state.monthNumber); 
+  const dispatch = useDispatch();
+
   const monthNames = [
     "Styczen",
     "Luty",
@@ -43,19 +47,19 @@ const Navigation = (props) => {
           className="navigation__prev"
           onClick={() => {
             setMonth(month - 1)
-            props.changeMonth(getMonthNumber(month-1));
+            dispatch(changeMonth(getMonthNumber(month-1)));
           }}
         >
           Prev
         </button>
         <span className="navigation__current">
-          { getCurrentMonthName(props.monthNumber) }
+          { getCurrentMonthName(monthNumber) }
         </span>
         <button
           className="navigation__next"
           onClick={() => {
             setMonth(month +1);
-            props.changeMonth(getMonthNumber(month+1));
+            dispatch(changeMonth(getMonthNumber(month+1)));
           }}
         >
           Next
@@ -65,16 +69,4 @@ const Navigation = (props) => {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    monthNumber: state.monthNumber
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    changeMonth: (monthNumber) => dispatch(changeMonth(monthNumber))
-  }
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(Navigation);
+export default Navigation;
