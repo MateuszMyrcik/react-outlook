@@ -1,0 +1,43 @@
+.schedule-form {
+	z-index: 3;
+	width: 300px;
+	border: 2px solid #000;
+	box-shadow: 2px 2px #000;
+	height: 100vh;
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: #fff;
+	padding: 70px 10px;
+
+	&__close-btn {
+		position: absolute;
+		right: 32px;
+		top: 32px;
+		width: 32px;
+		height: 32px;
+		opacity: 0.5;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		&:before,
+		&:after {
+			position: absolute;
+			left: 15px;
+			content: ' ';
+			height: 33px;
+			width: 2px;
+			background-color: #000;
+		}
+
+		&:before {
+			transform: rotate(45deg);
+		}
+
+		&:after {
+			transform: rotate(-45deg);
+		}
+	}
+}

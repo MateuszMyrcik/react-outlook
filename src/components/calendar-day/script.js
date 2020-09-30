@@ -4,9 +4,12 @@ import React from 'react'
 function CalendarDay(props) {
   return (
     <div className="calendar-day">
-      <span className="calendar-day__number">{props.dayNumber}</span>
+      <span className="calendar-day__number">{props.date.dayNumber}</span>
       <div className="calendar-day__content">
-        <span className="calendar-day__item">Posprzatac pokoj</span>
+        <div className="calendar-day__tasks-list"></div>
+        <button className="calendar-day__add-task" onClick={() => {
+          props.onFormIconClick(props.date.dayNumber, props.date.monthNumber)}}
+        >Add new task</button>
       </div>
     </div>
   )

@@ -1,3 +1,13 @@
 .calendar-day {
   border: 1px solid #E1E1E1;
+  position: relative;
+
+  &__add-task {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+  }
 }

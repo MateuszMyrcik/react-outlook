@@ -1,8 +1,10 @@
-import React from "react";
-import { monthLengths } from "./config.js";
-import { connect, useSelector } from "react-redux";
-import CalendarDay from "../calendar-day/script.js";
-import CalendarHeadings from "../calendar-headings/script";
+import React, { useState } from 'react';
+import { openForm as formOpened } from '../../actions/index';
+import { monthLengths } from './config.js';
+import { useSelector, useDispatch } from 'react-redux';
+import CalendarDay from '../calendar-day/script.js';
+import CalendarHeadings from '../calendar-headings/script';
+
 
 import "./style.scss";
 
@@ -10,52 +12,81 @@ const CALENDAR_CELL_COUNT = 35;
 
 function Calendar() {
   const monthNumber = useSelector(state => state.monthNumber)
-
+  const dispatch = useDispatch();
   const firstMonthDayNumber = new Date(
     Date.UTC(2020, monthNumber, 1)
   ).getDay();
 
-  getDaysNumbers();
+  const [isFormOpen, setFormState] = useState(false);
+
+  function openForm(day, month) {
+    setFormState(!isFormOpen);
+    console.log(`Form is opened on date : ${day} ${month}`)
+    console.log(day. month)
+    dispatch(formOpened(day,month));
+  }
+
+  function getDayId(dayNumber, monthNumber) {
+    let dayId = '';
+    dayId += dayNumber <= 9 ? `0${dayNumber}` : dayNumber;
+    dayId += monthNumber <= 9 ? `0${monthNumber}` : monthNumber;
+
+    return dayId;
+  }
 
   function getCalendarViewList() {
     return getDaysNumbers().map((item) => (
-      <CalendarDay dayNumber={item}></CalendarDay>
+      <CalendarDay 
+        key={getDayId(item.dayNumber, item.monthNumber)} 
+        date={item}
+        onFormIconClick={openForm}
+      >
+      </CalendarDay>
     ));
   }
 
   function getDaysNumbers() {
-    const monthLenght = {
-      prev: getMonthLenght(monthNumber - 1),
-      current: getMonthLenght(monthNumber)
+    const monthLength = {
+      prev: getMonthLength(monthNumber - 1),
+      current: getMonthLength(monthNumber),
     };
 
     const daysNumbers = [];
 
-    const firstPrevMonthDay = monthLenght.prev - firstMonthDayNumber + 1;
+    const firstPrevMonthDay = monthLength.prev - firstMonthDayNumber + 1;
 
-    for (let i = firstPrevMonthDay; i < monthLenght.prev; i++) {
-      daysNumbers.push(i);
+    for (let i = firstPrevMonthDay; i < monthLength.prev; i++) {
+      daysNumbers.push({
+          monthNumber: monthNumber - 1,
+          dayNumber: i
+        });
     }
 
-    for (let i = 1; i <= monthLenght.current; i++) {
-      daysNumbers.push(i);
+    for (let i = 1; i <= monthLength.current; i++) {
+      daysNumbers.push({
+        monthNumber: monthNumber,
+        dayNumber: i
+      });
     }
 
     for (let i = 1; daysNumbers.length < CALENDAR_CELL_COUNT; i++) {
-      daysNumbers.push(i);
+      daysNumbers.push({
+        monthNumber: monthNumber + 1,
+        dayNumber: i
+      });
     }
 
     return daysNumbers;
   }
 
-  function getMonthLenght() {
+  function getMonthLength() {
     return monthLengths[monthNumber];
   }
 
   return (
     <main className="calendar">
       <CalendarHeadings></CalendarHeadings>
-      {getCalendarViewList()}
+      {getCalendarViewList()}{/* TODO: MOVE it as CalendarBody */}
     </main>
   );
 }
